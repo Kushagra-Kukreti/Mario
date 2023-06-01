@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0px;
+        }
+        body{
+            overflow-y: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ye ek background hai game ka -->
+    <canvas class="board"></canvas>
+
+    <!-- preload hojaaye saari chije -->
+    <script src="preload.js" defer></script>
+
+    <!-- coordinates lene ke liye har level ke entities ke  -->
+    <script src="./assets/map/coordinates.js" defer></script>
+
+    <!-- inputs ke saare controls ki file -->
+    <script src="input.js" defer></script>
+
+    <!-- isme saare entities hai har ek level ke mtlb overall background h pura level ka basic structure h -->
+    <script src="entityParent.js" defer></script>
+
+    <!-- bg ke elements yaha h  -->
+    <script src="bgblueprint.js" defer></script>
+
+
+    <!-- mario ki pick krne ki aur usse place krne ki file -->
+    <script src="./entity/mario.js" defer></script>
+
+     <!-- goomba ki pick krne ki aur usse place krne ki file -->
+     <script src="./entity/goomba.js" defer></script>
+
+      <!-- koopa ki pick krne ki aur usse place krne ki file -->
+      <script src="./entity/koopa.js" defer></script>
+
+      <!-- bricks ki pick krne ki aur usse place krne ki file -->
+      <script src="./entity/particles.js" defer></script>
+
+      <!-- bricks ki pick krne ki aur usse place krne ki file -->
+      <script src="./entity/bricks.js" defer></script>
+
+      <!-- blocks ki pick krne ki aur usse place krne ki file -->
+      <script src="./entity/mystery.js" defer></script>
+
+    <!-- har level ko draw krne ke liye file hai ye -->
+    <script src="levelBuilder.js" defer></script>
+
+    <!-- mario pr jo gravity lgegi vo iss file me hai  -->
+    <script src="physics.js" defer></script>
+
+    
+    <!-- mario ke saare animation iss file se trigger honge -->
+    <script src="animation.js" defer></script>
+
+    <!-- mario ke alawa saari entities ke movement ka logic  -->
+    <script src="movement.js"></script>
+
+
+    <!-- game pura yaha hai --major logic game ka  -->
+    <script src="game.js" defer></script>
+
+</body>
+
+</html>
