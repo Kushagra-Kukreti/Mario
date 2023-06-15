@@ -1,17 +1,18 @@
 
 //isme hume bas itna pta ho ki mario ki position aur uski width height kya hai bas
-class Mario extends Entity {
+class BigMario extends Entity {
 
     constructor(spritesheet, posX, posY, width, height) {
         //pixi.pomple.com me image lejaana jo hisse ke corrdinates chahiyeh select krna vo area aurb inspect pr jaake console me mil jaayenge abhi directly likhra
+        // isBig = false
+        // if(isBig == true){
 
+            let img = new Sprite(spritesheet, 279, 0, 17, 38)
 
-            let img = new Sprite(spritesheet, 650, 3, 17, 19)
-
-            super(img, "mario", posX, posY, width, height);
+            super(img, "bigmario", posX, posY, width, height);
     
             //itna aage ya peeche jayega x-direction mai
-            this.velX = 18;
+            this.velX = 1.8;
             this.velY = 0;
     
     
@@ -27,9 +28,9 @@ class Mario extends Entity {
                 //right walk krne me spritesheet ke ye ye coordinates ke mario use honge
                 walkRight: {
                     frames: [
-                        new Sprite(spritesheet, 667, 5, 16, 16),
-                        new Sprite(spritesheet, 683, 5, 16, 16),
-                        new Sprite(spritesheet, 699, 5, 16, 16),
+                        new Sprite(spritesheet, 294, 3, 19, 35),
+                        new Sprite(spritesheet, 311, 4, 16, 34),
+                        new Sprite(spritesheet, 326, 3, 17, 36),
                     ],
                     counter: 0
     
@@ -37,18 +38,18 @@ class Mario extends Entity {
                 //left walk krne me spritesheet ke ye ye coordinates ke mario use honge
                 walkLeft: {
                     frames: [
-                        new Sprite(spritesheet, 844, 21, 16, 16),
-                        new Sprite(spritesheet, 828, 21, 16, 16),
-                        new Sprite(spritesheet, 812, 21, 16, 16),
+                        new Sprite(spritesheet, 583, 37, 16, 34),
+                        new Sprite(spritesheet, 564, 37, 21, 31),
+                        new Sprite(spritesheet, 550, 37, 19, 31),
                     ],
                     counter: 0 // counter is for looping the animation
                 },
                 //right stand krne me spritesheet ke ye ye coordinates ke mario use honge
-                standRight: new Sprite(spritesheet, 651, 5, 16, 16),
-                standLeft: new Sprite(spritesheet, 860, 21, 16, 16),
-                jumpRight: new Sprite(spritesheet, 731, 5, 16, 16),
-                jumpLeft: new Sprite(spritesheet, 778, 22, 16, 16),
-                dead: new Sprite(spritesheet, 748, 5, 16, 16),
+                standRight: new Sprite(spritesheet, 279, 0, 17, 38),
+                standLeft: new Sprite(spritesheet, 596, 36, 20, 33),
+                jumpRight: new Sprite(spritesheet, 503, 4, 16, 36),
+                jumpLeft: new Sprite(spritesheet, 374, 38, 19, 33),
+                dead: new Sprite(spritesheet, 357, 41, 18, 30),
             }
     
             //isme har state ke liye animation ka function likha jayega
@@ -128,11 +129,9 @@ class Mario extends Entity {
             //direction default right and state standing hogi 
             this.currentDirection = "right"
             this.currentState = this.states.standingAnim
-    
 
-        }
-       
 
 
     }
 
+}

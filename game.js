@@ -74,7 +74,16 @@ const render = {
 
         //drawing particles
         gameObj.entities.particles.forEach((particle) => {
-            this.drawEntity(camera,particle, gameObj)
+            this.drawEntity(camera, particle, gameObj)
+        })
+
+        //drawing mushrooms
+        gameObj.entities.mushrooms.forEach((mushroom) => {
+            this.drawEntity(camera, mushroom, gameObj)
+        })
+        //drawing coins
+        gameObj.entities.coins.forEach((coin) => {
+            this.drawEntity(camera, coin, gameObj)
         })
 
 
@@ -163,7 +172,7 @@ class Game {
 
 
             //ek naya mario bnake dega
-            let mario = new Mario(spriteSheetImage, 175, 0, 20, 20)
+            let mario = new Mario(spriteSheetImage, 175, 0, 24, 24)
 
             //mario add krdia entities me 
             gameObj.entities.mario = mario;
@@ -173,6 +182,8 @@ class Game {
             gameObj.entities.bricks = []
             gameObj.entities.particles = []; //brick tutne ke baad jo particles bnenge unka array
             gameObj.entities.blocks = []; //mystery boxes ka array
+            gameObj.entities.mushrooms = []; //mystery boxes ka array
+            gameObj.entities.coins = []; //mystery boxes ka array
 
             levelOne.goombas.forEach((gCord) => {
                 //isse ek ek krke naye goomba banenge aur goomba array gameobj ke goomba  array me add  ho jayenge
@@ -203,7 +214,7 @@ class Game {
     update(gameObj) {
         function gameloop() {
 
-            // console.log("hello",Math.random())
+            console.log("mario yaha h "+gameObj.entities.mario.posX);
 
             //checck krte rehte h input ka update to ni aaya 
             input.update(gameObj);
@@ -240,11 +251,3 @@ class Game {
 }
 const game = new Game();
 game.init();
-// preload().then(() => {
-//     console.log(castleImage);
-//     console.log(mountainImage);
-//     console.log(cloudImage);
-//     console.log(spriteSheetImage);
-//     console.log(tileSetImage);
-//     console.log("game started")
-// })

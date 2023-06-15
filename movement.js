@@ -11,5 +11,10 @@ const movement = {
         gameObj.entities.koopas.forEach((koopa)=>{
             koopa.currentState.movement(gameObj) // ye play krega current state ko 
         })
+
+         //mushroom movement
+         gameObj.entities.mushrooms.forEach((mushroom)=>{
+            mushroom.states.movement(gameObj) // ye play krega current state ko 
+        })
     }
 }

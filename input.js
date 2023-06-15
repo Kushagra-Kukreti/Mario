@@ -27,7 +27,11 @@ let input = {
     ,
     update(gameObj) {
 
-        let mario = gameObj.entities.mario;
+        let mario  = gameObj.entities.mario;
+
+        if(mario.posX>=3181){
+            gameObj.reset();
+        }
 
         if (gameObj.userControl == true) { 
             
@@ -67,7 +71,6 @@ let input = {
                 //upar bhejdo baaki kaam velocity krdegi
 
 
-                //1.1 pehle press me hogi velocity aur tbhi jump ho vrna hawa me bhi jump hota rhega hawa me hi speed bd jayegi
                 if (mario.velY == 1.1) {
                     mario.velY -= 15;
                     mario.currentState = mario.states.jumpingAnim;

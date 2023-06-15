@@ -137,6 +137,14 @@ class LevelBuilder{
           this.drawEntity(block,camera,gameObj);
         })
 
+        gameObj.entities.mushrooms.forEach((mushroom)=>{
+          this.drawEntity(mushroom,camera,gameObj);
+        })
+
+        gameObj.entities.coins.forEach((coin)=>{
+          this.drawEntity(coin,camera,gameObj);
+        })
+
 
     }
     drawEntity(entity,camera,gameObj){

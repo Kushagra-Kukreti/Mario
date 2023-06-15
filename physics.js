@@ -13,6 +13,10 @@ let physics = {
             this.gravity(particle) //har ek koopa pr gravity
         })
 
+        gameObj.entities.mushrooms.forEach((mushroom) => {
+            this.gravity(mushroom) //har ek koopa pr gravity
+        })
+
         this.entityMarioCollision(gameObj) // koi bhi entity jb mario se collloid kregi to kya kro 
         this.bgEntityCollision(gameObj) // kisi bhi entity ka bg ke saath collision ye sambhaal lega
 
@@ -31,7 +35,7 @@ let physics = {
     // },
     entityMarioCollision(gameObj) {
 
-        let { mario, goombas,koopas,bricks,blocks } = gameObj.entities;
+        let { mario, goombas, koopas, bricks, blocks,mushrooms } = gameObj.entities;
 
         goombas.forEach((goomba) => {
 
@@ -42,7 +46,7 @@ let physics = {
             }
         })
 
-        koopas.forEach((koopa)=>{
+        koopas.forEach((koopa) => {
 
             if (this.checkRectCollision(mario, koopa)) {
                 this.handleCollision(mario, koopa, gameObj);
@@ -51,42 +55,55 @@ let physics = {
 
         })
 
-        bricks.forEach((brick)=>{
+        bricks.forEach((brick) => {
 
             if (this.checkRectCollision(mario, brick)) {
-               
+
 
                 //direction ke hisaab sw
-               let wantToBreak =  this.handleDirec(brick,mario);
-               if(wantToBreak){
+                let wantToBreak = this.handleDirec(brick, mario);
+                if (wantToBreak) {
 
-                // ye particle create krega mere liye
-                brick.createParticle(gameObj);
+                    // ye particle create krega mere liye
+                    brick.createParticle(gameObj);
 
-                let idx = gameObj.entities.bricks.indexOf(brick);
-                gameObj.entities.bricks.splice(idx,1);
+                    let idx = gameObj.entities.bricks.indexOf(brick);
+                    gameObj.entities.bricks.splice(idx, 1);
 
-               }
+                }
 
             }
 
         })
 
-        blocks.forEach((block)=>{
+        blocks.forEach((block) => {
 
             if (this.checkRectCollision(mario, block)) {
-               
+
 
                 //direction ke hisaab sw
-               let wantToReveal =  this.handleDirec(block,mario);
-               if(wantToReveal){
-
-                block.currentState = block.states.emptyAnim;
-
-               }
+                let wantToReveal = this.handleDirec(block, mario);
+                if (wantToReveal) {
+                    if (block.currentState != block.states.emptyAnim) {
+                        if (block.content == "coin") {
+                            block.createCoins(gameObj);
+                        }
+                        else {
+                            block.createMushrooms(gameObj);
+                        }
+                        block.currentState = block.states.emptyAnim;
+                    }
+                }
 
             }
 
+        })
+
+        mushrooms.forEach((mushroom)=>{
+            if(this.checkRectCollision(mario,mushroom)){
+               let idx=  gameObj.entities.mushrooms.indexOf(mushroom);
+               gameObj.entities.mushrooms.splice(idx);
+            }
         })
 
     },
@@ -98,18 +115,19 @@ let physics = {
             //left --- mario ki death
 
             // mtlb dono ne cross krdiya ek dusre ko  && ground pr hai mario
-            if (mario.posX < entity.posX && mario.posY == 173.2) {
-                
+            if (mario.posX < entity.posX && mario.posY == 169.2) {
+               
+
                 if (entity.currentState != entity.states.squashed && entity.type == "goomba") { //ye isliye kyuki mario ka animation death ka tbhi lgaana jb already vo dead na ho mtlb jb mario mr ke upar se neeche aata hai usme agr vo vaaps top se takra gaya to gadbad ho jayegi kyuki entity ko to remove hone mai time lgega aur uss beech firse collision na ho ho bhi to squashed state rahi agr to firse ni lgega death animation 
                     this.marioDeath(gameObj, mario);
                 }
-                else if(entity.type == "koopa"){
+                else if (entity.type == "koopa") {
 
-                    if(entity.currentState == entity.states.hiding){
-                        this.koopaSlide(entity,mario);
+                    if (entity.currentState == entity.states.hiding) {
+                        this.koopaSlide(entity, mario);
                     }
-                    else{
-                       this.marioDeath(gameObj,mario);
+                    else {
+                        this.marioDeath(gameObj, mario);
                     }
 
                 }
@@ -117,80 +135,79 @@ let physics = {
 
             //right -- mario ki death 
 
-            if (mario.posX > entity.posX && mario.posY == 173.2) {
+            if (mario.posX > entity.posX && mario.posY == 169.2) {
 
                 if (entity.currentState != entity.states.squashed && entity.type == "goomba") {
                     this.marioDeath(gameObj, mario);
-                }else if(entity.type == "koopa"){
+                } else if (entity.type == "koopa") {
 
-                    if(entity.currentState == entity.states.hiding){
-                        this.koopaSlide(entity,mario);
+                    if (entity.currentState == entity.states.hiding) {
+                        this.koopaSlide(entity, mario);
                     }
-                    else{
-                       this.marioDeath(gameObj,mario);
+                    else {
+                        this.marioDeath(gameObj, mario);
                     }
 
                 }
             }
             //top -- entity  ki death 
             if (mario.posY < entity.posY && (mario.posX < entity.posX + entity.width) && (mario.posX + mario.width > entity.posX))
-                
-              //just preventing ki double death na ho 
-              if(mario.pointer != "dead" && entity.type == "koopa"){
 
-                if(entity.currentState == entity.states.walkingAnim){
-                    //ab agr colloid krega to shell waala lgega
-                    this.koopaHide(entity,mario);
-                }
-                else if(entity.currentState == entity.states.hiding){
-                    this.koopaSlide(entity,mario);
-                }
-                else{
-                    this.enemyDeath(gameObj, mario, entity);
-                }
+                //just preventing ki double death na ho 
+                if (mario.pointer != "dead" && entity.type == "koopa") {
+
+                    if (entity.currentState == entity.states.walkingAnim) {
+                        //ab agr colloid krega to shell waala lgega
+                        this.koopaHide(entity, mario);
+                    }
+                    else if (entity.currentState == entity.states.hiding) {
+                        this.koopaSlide(entity, mario);
+                    }
+                    else {
+                        this.enemyDeath(gameObj, mario, entity);
+                    }
 
 
-              }
-            else if (entity.currentState != entity.states.squashed && mario.pointer != "dead" && entity.type == "goomba")
+                }
+                else if (entity.currentState != entity.states.squashed && mario.pointer != "dead" && entity.type == "goomba")
                     this.enemyDeath(gameObj, mario, entity);
 
         }
 
     },
-    koopaHide(entity,mario){
+    koopaHide(entity, mario) {
         entity.currentState = entity.states.hiding;
-        entity.posX = (mario.currentDirection == "left")?entity.posX-10:entity.posX+10;
+        entity.posX = (mario.currentDirection == "left") ? entity.posX - 10 : entity.posX + 10;
 
     },
-    koopaSlide(entity,mario){
+    koopaSlide(entity, mario) {
         entity.currentState = entity.states.sliding;
         //mario ki direction mai slide kroo
         entity.currentDirection = mario.currentDirection;
-        entity.posX = (mario.currentDirection == "left")?entity.posX-10:entity.posX+10;
+        entity.posX = (mario.currentDirection == "left") ? entity.posX - 10 : entity.posX + 10;
 
     },
     enemyDeath(gameObj, mario, entity) {
-        if(entity.type == "goomba")
-        {
+        if (entity.type == "goomba") {
             entity.currentState = entity.states.squashed;
             entity.pointer = "squashed";
         }
-        else if(entity.type == "koopa"){
-        entity.velX+=5;
-        entity.velY-=14;
+        else if (entity.type == "koopa") {
+            entity.velX += 5;
+            entity.velY -= 14;
         }
         setTimeout(() => {
-            if(entity.type == "goomba"){
+            if (entity.type == "goomba") {
                 let idx = gameObj.entities.goombas.indexOf(entity);
                 delete gameObj.entities.goombas[idx]; // taaki marne ke baad ye game se hatt jaaye 
 
             }
-            else if(entity.type == "koopa"){
+            else if (entity.type == "koopa") {
                 let idx = gameObj.entities.koopas.indexOf(entity);
                 delete gameObj.entities.koopas[idx]; // taaki marne ke baad ye game se hatt jaaye 
 
             }
-           
+
         }, 200)
 
     },
@@ -211,6 +228,7 @@ let physics = {
         let mario = gameObj.entities.mario;
         let goombas = gameObj.entities.goombas;
         let koopas = gameObj.entities.koopas;
+        let mushrooms = gameObj.entities.mushrooms;
 
         this.bgCollision(mario, gameObj) // collision for mario
 
@@ -222,10 +240,16 @@ let physics = {
             this.bgCollision(koopa, gameObj);// collision for koopa
         })
 
+        mushrooms.forEach((mushroom)=>{
+            this.bgCollision(mushroom,gameObj);
+        })
+
     }
     ,
     bgCollision(entity, gameObj) {
         let scenery = gameObj.entities.scenery;
+        let bricks = gameObj.entities.bricks;
+        let blocks = gameObj.entities.blocks;
 
         scenery.forEach((scene) => {
 
@@ -259,6 +283,50 @@ let physics = {
 
         })
 
+        bricks.forEach((brick) => {
+
+            if (this.checkRectCollision(brick, entity)) { //collision is there
+
+                    this.handleDirec(brick, entity);
+                 
+            }
+
+        })
+
+        blocks.forEach((scene) => {
+
+            if (this.checkRectCollision(scene, entity)) { //collision is there
+
+                if (scene.type == 'stair' || scene.type == "pipe") {
+                    this.handleDirec(scene, entity);
+                }
+                else {
+                    if (scene.type == "ground") {
+                        //pipe waala logic standing ka 
+                        if (entity.posY < scene.posY && entity.posX + entity.width > scene.posX && scene.posX + scene.width > entity.posX && entity.velY >= 0) {   //mario upar hona chahiyeh pipe se 
+                            // mario pipe ki boundaries me hona chahiyeh 
+                            //velocity Y me negative nahi honi chahiyeh-->mtlb upar ki taraf na jaara ho screen mai 
+
+                            if (entity.type == "mario")
+                                entity.currentState = entity.states.standingAnim; //taaki animation daudne waala na ho vrna sirf ground pr aane pr hi standing anim lgta h 
+
+                            //baaki type ki entity me already walkingAnim lgega
+                            if (entity.pointer != "dead") {
+                                entity.posY = scene.posY - entity.height - 1;
+                                entity.velY = 1.1; //yaha agr 0 kroge to upar jump ni krne dega 
+                            }
+
+
+                        }
+
+                    }
+                }
+            }
+
+        })
+
+
+       
     },
     checkRectCollision(entity1, entity2) {
         //assuming scene is 1 rect & entity is 2nd rect
@@ -283,9 +351,9 @@ let physics = {
     handleDirec(scene, entity) {
         //bottom
         //velY<0 --- mtlb hawa mei velocity ghategi na
-        if(entity.posY > scene.posY && entity.posX + entity.width > scene.posX && scene.posX + scene.width > entity.posX && entity.velY < 0){
+        if (entity.posY > scene.posY && entity.posX + entity.width > scene.posX && scene.posX + scene.width > entity.posX && entity.velY < 0) {
 
-            if(scene.type == "brick" || scene.type == "block"){
+            if (scene.type == "brick" || scene.type == "block") {
                 entity.posY = scene.posY + scene.height; //mario ki position thik kro brick se takraane ke baad
                 entity.velY = 1.1; //vrna jb takk ground ko hit ni krega gravity ke kaaran fisal ke neeche ayega 
                 return true;
