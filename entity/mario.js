@@ -11,7 +11,7 @@ class Mario extends Entity {
             super(img, "mario", posX, posY, width, height);
     
             //itna aage ya peeche jayega x-direction mai
-            this.velX = 18;
+            this.velX = 1.8;
             this.velY = 0;
     
     
