@@ -33,6 +33,13 @@ let input = {
             gameObj.reset();
         }
 
+        if(mario.pointer == 'dead'){
+
+            if (this.isPressed("Space")) {
+                gameObj.reset();
+            }
+
+        }
         if (gameObj.userControl == true) { 
             
             //left 
