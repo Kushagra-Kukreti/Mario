@@ -9,7 +9,7 @@ const render = {
         //draw sky
 
         //by-default black fill hoga 
-        gameObj.tool.fillStyle = "#7ed6df";
+        gameObj.tool.fillStyle = "#63adff";
         //change krna hai colour
 
 
@@ -43,7 +43,7 @@ const render = {
 
 
         gameObj.tool.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        gameObj.tool.fillStyle = "#7ed6df";
+        gameObj.tool.fillStyle = "#63adff";
         //change krna hai colour
 
         gameObj.tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
